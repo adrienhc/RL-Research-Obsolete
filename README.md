@@ -13,7 +13,8 @@ If you want to use my added features, just run the Setup_OpenAI.sh script, which
 The Model is simulated using Mujoco's physics based model, you can get a license at this address: http://www.mujoco.org/index.html
 
 The adaptation of Mujoco to run under python3 comes from OpenAI's mujoco-py repository: https://github.com/openai/mujoco-py 
-If you wish to install this just run my Setup_Mujoco_py.sh script, which will clone their repository and set it up for you.
+
+Follow this tutorial: https://www.linkedin.com/pulse/setting-up-mujoco-ganesh-prasanna/ if you wish to install Mujoco and Mujoco-py
 
 Feel free to consult OpenAI's gym, baselines and mujoco-py repositories and their respetive README for more informations. 
 
