@@ -19,17 +19,17 @@ Feel free to consult OpenAI's gym, baselines and mujoco-py repositories and thei
 
 ## This Repository
 
-### Directories:
+### Directories
 
 	models - trained_model, the one that is currently being trained
 		   - best_model, the best result I currently have 
 
 	tensorflow - contains the tensorboard version of graph used by the PPO algorithm
 				 to view it: $ cd tensorflow
-				 			 $ tensorboard --logdir=.
-				 connect to http://localhost:6006/  on yout web browser to view the interactive graph 
+				 		$ tensorboard --logdir=.
+				 connect to http://localhost:6006/  on your web browser to view the interactive graph 
 
-### Files:
+### Files
 
 	*.py - the files I have modified from OpenAI's baseline
 
