@@ -26,7 +26,7 @@ Feel free to consult OpenAI's gym, baselines and mujoco-py repositories and thei
 
 	tensorflow - contains the tensorboard version of graph used by the PPO algorithm
 				 to view it: $ cd tensorflow
-				 		$ tensorboard --logdir=.
+				 	$ tensorboard --logdir=.
 				 connect to http://localhost:6006/  on your web browser to view the interactive graph 
 
 ### Files
