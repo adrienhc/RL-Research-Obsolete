@@ -1,8 +1,8 @@
-#Adrien Hadj-Chaib  -  RL Research Autonomous Bipedal Locomotion
+# Adrien Hadj-Chaib  -  RL Research Autonomous Bipedal Locomotion
 
 This project is conducted under the supervision of Masaki Nakada PhD, in UCLA's Magix Lab - Computer Graphics and Vision Laboratory.
 
-#Introduction 
+## Introduction 
 
 The project uses OpenAI's Gym: https://github.com/openai/gym
 The code implements a PPO (Proximal Policy Optimization) algorithm which trains a Mujoco human bipedal model to walk forward autonomously.  
@@ -17,9 +17,9 @@ Follow this tutorial: https://www.linkedin.com/pulse/setting-up-mujoco-ganesh-pr
 Feel free to consult OpenAI's gym, baselines and mujoco-py repositories and their respetive README for more informations. 
 
 
-#This Repository
+## This Repository
 
-Directories:
+### Directories:
 
 	models - trained_model, the one that is currently being trained
 		   - best_model, the best result I currently have 
@@ -29,13 +29,13 @@ Directories:
 				 			 $ tensorboard --logdir=.
 				 connect to http://localhost:6006/  on yout web browser to view the interactive graph 
 
-Files:
+### Files:
 
 	*.py - the files I have modified from OpenAI's baseline
 
 	NOTES.txt - a code description, my objectives, issues and thoughts on how to approach the current problem
 
 
-#Contact 
+## Contact 
 
 hadjchaib.adrien@gmail.com
