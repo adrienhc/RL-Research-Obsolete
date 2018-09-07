@@ -4,17 +4,17 @@ This project is conducted under the supervision of Masaki Nakada PhD, in UCLA's 
 
 ## Introduction 
 
-The project uses OpenAI's Gym: https://github.com/openai/gym
+The project uses [OpenAI's Gym](https://github.com/openai/gym)
 The code implements a PPO (Proximal Policy Optimization) algorithm which trains a Mujoco human bipedal model to walk forward autonomously.  
 
-Most of the code I use comes from OpenAI's Reinforcement Learning Baseline: https://github.com/openai/baselines
+Most of the code I use comes from [OpenAI's Reinforcement Learning Baseline](https://github.com/openai/baselines)
 I have only uploaded the files I have modified from their implementation.
-If you want to use my added features, just run the Setup_OpenAI.sh script, which will clone OpenAI's repository and add in the files I have modified.
+If you want to use my added features, just run the *Setup_OpenAI.sh* script, which will replace OpenAI's files I have modified with my own versions.
 
-The Model is simulated using Mujoco's physics based model, you can get a license at this address: http://www.mujoco.org/index.html
-The adaptation of Mujoco to run under python3 comes from OpenAI's mujoco-py repository: https://github.com/openai/mujoco-py 
-Follow this tutorial: https://www.linkedin.com/pulse/setting-up-mujoco-ganesh-prasanna/ if you wish to install Mujoco and Mujoco-py
-Feel free to consult OpenAI's gym, baselines and mujoco-py repositories and their respetive README for more informations. 
+The Model is simulated using Mujoco's physics based model, you can get a license [here](http://www.mujoco.org/index.html).
+The adaptation of Mujoco to run under python3 comes from [OpenAI's mujoco-py](https://github.com/openai/mujoco-py) repository. 
+Follow [this tutorial](https://www.linkedin.com/pulse/setting-up-mujoco-ganesh-prasanna/) if you wish to install Mujoco and Mujoco-py.
+Feel free to consult OpenAI's gym, baselines and mujoco-py repositories and their respective README for more informations. 
 
 
 ## This Repository
@@ -22,7 +22,7 @@ Feel free to consult OpenAI's gym, baselines and mujoco-py repositories and thei
 ### Directories
 
 	models - trained_model, the one that is currently being trained
-		   - best_model, the best result I currently have 
+		- best_model, the best result I currently have 
 
 	tensorflow - contains the tensorboard version of graph used by the PPO algorithm
 				 to view it: $ cd tensorflow
@@ -35,6 +35,7 @@ Feel free to consult OpenAI's gym, baselines and mujoco-py repositories and thei
 
 	NOTES.txt - a code description, my objectives, issues and thoughts on how to approach the current problem
 
+	Setup_OpenAI - a script that replaces OpenAI's files I have modified with my own versions
 
 ## Contact 
 

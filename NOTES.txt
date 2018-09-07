@@ -1,0 +1,133 @@
+Code Description:
+
+-----run_humanoid.py
+
+		train(...)
+			-creates tf session that uses 1 cpu
+			-defines a policy function, a neural network that uses the environement's action and observations spaces
+			-policy neural net has 2 64 neurals hidden layers
+
+			-creates mujoco environment and scales down reward, multiplies it by 0.1
+
+			-performs PPO on the environment, using the policy function
+				-Default Parameters:
+					-timesteps_per_actorbatch=2048,
+            		-clip_param=0.2, 
+            		-entcoeff=0.0,
+            		-optim_epochs=10, 
+           	 		-optim_stepsize=3e-4, 
+            		-optim_batchsize=64, 
+            		-gamma=0.99, 
+            		-lam=0.95,
+
+            -once training done, closes environemnt and saves tf model.
+
+
+        main(...)
+        	-configures logger
+        	-parses CL arguments
+        	-If --play argument load and runs the model in mujoco environment
+        	-Otherwise, train the given model
+
+
+-----mlp_policy.py
+    	-creates the policies, corresponding to the 'pi' and 'oldpi' namespaces in the tensorboard graph
+    	
+    	-obfilter = input matrix, running mean of observations
+    	
+    	-vf = value function, 
+    		takes normalized and clipped obfilter as input,
+    		2 x 64 neurons hidden layers
+    		tanh activation function 
+    		output is predicted value for each state
+    		
+		-pol = policy function,
+			same architecture as value function
+			output is action parameters
+
+		-creates gaussian probability distribution from pol's output
+
+		-creates act (stochastic, observation space) :-> (best action, predicted state value)
+			//used to evaluate model, run the policy when gathering trajectories
+
+
+-----pposgd_simple.py
+
+		traj_segment_generator(...)
+			-uses policy.act to create trajectories for "horizon" timesteps 
+			-gathers the objervations and rewards from each step
+			-keeps track of mean epiode lenghts and mean rewards
+			-returns a batch of trajectories, along with their relevant lengths, predicted values for each state ...
+
+		add_vtarg_and_adv(...)
+			-computes the target value for each state with TD Lambda
+			-computes the advantage for each state with GAE (Gradient Advantage Estimator) aka Lambda
+			-loops backward through the segments and computes the TD Lambda (aka TD Error) for each state
+				from this TD Lambda, computes the GAE (discounted sum of TD Lambdas)
+				from this GAE, computes each state's Advantage 
+			uses a regular Forward View TD Lambda algorithm, but computes it backwards
+
+		learn(...)
+			-gathers observations, actions spaces
+			-creates two policies:
+				-pi = new policy
+				-oldpi = old policy
+			-gathers target advantage, empirical return
+			-clipping parameter
+			-policy' action and obs output
+			-compute the losses (policy surrogate, value function loss)
+
+			-creates "lossandgrad" (ob, ac, atarg, ret, lrmult) :-> (losses + [U.flatgrad(total_loss, var_list)])
+				//computes loos and gradient from policies outputs
+
+			-creates "assign_old_eq_new" to make old policy take the value of the current new policy before next trajectory starts
+
+			-load model we wish to train
+			-creates and saves graph in "/tmp/tensorflow/"
+			-initializes graph and Adam optimizer
+
+			-generates trajectories using traj_segment_generator(...) with the new policy
+
+			-MAIN LOOP:
+				-gathers next trajectory (ac, obs, reward, adv, predicted values ...)
+				-compute the v_targ and adv with add_vtarg_and_adv(...)
+				-comoute the Real Advantage estimator (previous one being normalized)
+				-set oldpi to newpi
+
+				-organizes trajectories into batches
+				-computes losses and gradients for each timestep
+				-updates the new policy according to gradient and stepsize
+
+				-computes new losses
+
+				-logging information
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+Current Issues:
+
+	-Training a model again degrades its performance:
+		-When I try to train further an already trained model, training picks up where it was left off (as shown by the Episode length and Reward being the same as end of previous training).
+		-However, I notice that the humanoid's performance degrades quickly as I witness a quick drop in Episode Length and Reward, and then a stagnation of both those values.
+		-However starts to learn again at a slow pace after hours of training (as if I was having a cold start)
+		-When training is over, running the simulation shows that the humanoid walks worsens compared to before training. It walks for a shorter distance and in a poorer posture.
+
+Hypothesis:
+
+	- Performance dive is normal training fluctuates quite a bit (not probable since a lot of fluctuation)
+	- Necessary to gather obs back and make a new obs matrix? to feed to neural net
+	- Because not saving and restoring all params (new policy, old policy -- and their respective observations matrixes, policies and value functions are ALREADY BEING SAVED)
+	- Set mpi_running_mean_std to trainable?  (I think not because role is to gather observations that's it, no point in saving observations, point of the network is to act optimally in all situations
+												What really matters is the weights and biases of the neural net!)
+	-Is it because that gradient function is not saved? (performance start off fine but gets worse, is it because my "gradient and loss" function is terrible? 
+														I make poor updates to my policy, making it worse overtime, because my gradient computing function is brand new)
+
+
+Objectives: 
+
+	understand the 'save' namespace in tensorboard
+	save and load tensorboard's 'gradient' namespace
